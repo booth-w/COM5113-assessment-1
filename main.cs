@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Forms;
 
 class Program {
 	static void Main(string[] args) {
@@ -6,7 +7,9 @@ class Program {
 			Test.Init();
 			Test.Run();
 		#else
-			GridGame.Run();
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+			Application.Run(new TerrainGrid());
 		#endif
 	}
 }

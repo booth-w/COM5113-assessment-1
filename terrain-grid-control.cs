@@ -7,6 +7,11 @@ using System.Windows.Forms;
 public class TerrainGridControl : Control {
 	private int[,] terrainMap;
 	private readonly Dictionary<int, Color> terrainColours;
+	private int rows;
+	private int cols;
+
+	private (int row, int col) start;
+	private (int row, int col) end;
 
 	/// <summary>
 	/// Init the terrain and the terrain colours
@@ -17,7 +22,7 @@ public class TerrainGridControl : Control {
 	/// 		<item>3: Light Blue</item>
 	/// 	</list>
 	/// </summary>
-	public TerrainGridControl() {
+	public TerrainGridControl(string[] terrainData) {
 		terrainColours = new Dictionary<int, Color> {
 			{0, Color.Black},
 			{1, Color.White},
@@ -25,12 +30,30 @@ public class TerrainGridControl : Control {
 			{3, Color.LightBlue},
 		};
 
-		terrainMap = new int[,] {
-			{0, 1, 2, 3},
-			{1, 2, 3, 0},
-			{2, 3, 0, 1},
-			{3, 0, 1, 2}
-		};
+		if (!IsValidTerrainData(terrainData)) {
+			throw new ArgumentException("Invalid terrain data");
+		}
+
+		this.rows = int.Parse(terrainData[0].Split(' ')[0]);
+		this.cols = int.Parse(terrainData[0].Split(' ')[1]);
+
+		this.start.row = int.Parse(terrainData[1].Split(' ')[0]);
+		this.start.col = int.Parse(terrainData[1].Split(' ')[1]);
+
+		this.end.row = int.Parse(terrainData[2].Split(' ')[0]);
+		this.end.col = int.Parse(terrainData[2].Split(' ')[1]);
+
+		terrainMap = new int[rows, cols];
+		for (int row = 0; row < rows; row++) {
+			var terrainRow = terrainData[row + 3].Split(' ');
+			for (int col = 0; col < cols; col++) {
+				terrainMap[row, col] = int.Parse(terrainRow[col]);
+			}
+		}
+	}
+
+	public bool IsValidTerrainData(string[] terrainData) {
+		return true;
 	}
 
 	/// <summary>
