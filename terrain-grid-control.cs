@@ -6,7 +6,6 @@ using System.Windows.Forms;
 
 public class TerrainGridControl : Control {
 	private int[,] terrainMap;
-	private readonly Dictionary<int, Color> terrainColours;
 	private int rows;
 	private int cols;
 
@@ -14,22 +13,36 @@ public class TerrainGridControl : Control {
 	private (int row, int col) end;
 
 	/// <summary>
-	/// Init the terrain and the terrain colours
 	/// 	<list>
 	/// 		<item>0: Black</item>
 	/// 		<item>1: White</item>
 	/// 		<item>2: Green</item>
 	/// 		<item>3: Light Blue</item>
+	///			<item>Other: Magenta</item>
 	/// 	</list>
 	/// </summary>
-	public TerrainGridControl(string[] terrainData) {
-		terrainColours = new Dictionary<int, Color> {
+	private readonly Dictionary<int, Color> terrainColours;
+
+	/// <summary>
+	/// Init the terrain and the terrain colours
+	/// </summary>
+	public TerrainGridControl() {
+		this.terrainColours = new Dictionary<int, Color> {
 			{0, Color.Black},
 			{1, Color.White},
 			{2, Color.Green},
 			{3, Color.LightBlue},
 		};
+	}
 
+	/// <summary>
+	/// Takes the terrain data string array,
+	/// checks if it is valid,
+	/// parses it into the terrain map,
+	/// then triggers a redraw
+	/// </summary>
+	/// <param name="terrainData">Array of strings representing the terrain data</param>
+	public void LoadTerrainData(string[] terrainData) {
 		if (!IsValidTerrainData(terrainData)) {
 			throw new ArgumentException("Invalid terrain data");
 		}
@@ -43,16 +56,18 @@ public class TerrainGridControl : Control {
 		this.end.row = int.Parse(terrainData[2].Split(' ')[0]);
 		this.end.col = int.Parse(terrainData[2].Split(' ')[1]);
 
-		terrainMap = new int[rows, cols];
+		this.terrainMap = new int[rows, cols];
 		for (int row = 0; row < rows; row++) {
-			var terrainRow = terrainData[row + 3].Split(' ');
+			string[] terrainRow = terrainData[row + 3].Split(' ');
 			for (int col = 0; col < cols; col++) {
-				terrainMap[row, col] = int.Parse(terrainRow[col]);
+				this.terrainMap[row, col] = int.Parse(terrainRow[col]);
 			}
 		}
+
+		this.Invalidate();
 	}
 
-	public bool IsValidTerrainData(string[] terrainData) {
+	private bool IsValidTerrainData(string[] terrainData) {
 		return true;
 	}
 
@@ -62,12 +77,12 @@ public class TerrainGridControl : Control {
 	protected override void OnPaint(PaintEventArgs e) {
 		base.OnPaint(e);
 
-		if (terrainMap == null) {
+		if (this.terrainMap == null) {
 			return;
 		}
 
-		int rows = terrainMap.GetLength(0);
-		int cols = terrainMap.GetLength(1);
+		int rows = this.terrainMap.GetLength(0);
+		int cols = this.terrainMap.GetLength(1);
 		if (rows == 0 || cols == 0) {
 			return;
 		}
@@ -88,18 +103,18 @@ public class TerrainGridControl : Control {
 		using (var pen = new Pen(Color.Black)) {
 			for (int y = 0; y < rows; y++) {
 				for (int x = 0; x < cols; x++) {
-					int terrainValue = terrainMap[y, x];
-					Color color;
+					int terrainValue = this.terrainMap[y, x];
+					Color colour;
 
-					if (!terrainColours.TryGetValue(terrainValue, out color)) {
-						color = Color.Magenta;
+					if (!this.terrainColours.TryGetValue(terrainValue, out colour)) {
+						colour = Color.Magenta;
 					}
 
 					int px = x * cellSize;
 					int py = y * cellSize;
 					var rect = new Rectangle(px, py, cellSize, cellSize);
 
-					using (var brush = new SolidBrush(color)) {
+					using (var brush = new SolidBrush(colour)) {
 						e.Graphics.FillRectangle(brush, rect);
 					}
 					e.Graphics.DrawRectangle(pen, rect);
