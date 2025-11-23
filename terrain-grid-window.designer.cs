@@ -1,4 +1,4 @@
-partial class TerrainGrid {
+partial class TerrainGridWindow {
 	private System.ComponentModel.IContainer components = null;
 
 	protected override void Dispose(bool disposing) {
@@ -10,7 +10,6 @@ partial class TerrainGrid {
 
 	private void InitializeComponent() {
 		this.SuspendLayout();
-		this.ClientSize = new System.Drawing.Size(400, 400);
 		this.Name = "Grid Game";
 		this.Text = "Terrain Grid Game";
 		this.ResumeLayout(false);

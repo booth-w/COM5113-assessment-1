@@ -9,7 +9,7 @@ class Program {
 		#else
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new TerrainGrid());
+			Application.Run(new TerrainGridWindow());
 		#endif
 	}
 }
