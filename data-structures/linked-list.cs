@@ -1,6 +1,6 @@
 using System;
 
-public class LinkedList<T> where T : IComparable<T> {
+public class LinkedList<T> {
 	private Element<T>? _head;
 
 	public LinkedList() {
@@ -99,26 +99,26 @@ public class LinkedList<T> where T : IComparable<T> {
 		PushFront(data, true);
 	}
 
-	public void PushSorted(T val) {
-		_head = PushSortedPriv(val, _head);
-	}
-
-	private Element<T> PushSortedPriv(T val, Element<T> list) {
-		// insert to sorted list
-		if (list == null) {
-			// if the list is empty, create a new element
-			return new Element<T>(val);
-		} else if (list.Data.CompareTo(val) >= 0) {
-			// if passed val is greater or equ, insert before current elem
-			Element<T> newElem = new Element<T>(val);
-			newElem.Next = list;
-			return newElem;
-		} else {
-			// otherwise, continue traversing the list
-			list.Next = PushSortedPriv(val, list.Next);
-			return list;
-		}
-	}
+	// public void PushSorted(T val) {
+	// 	_head = PushSortedPriv(val, _head);
+	// }
+	//
+	// private Element<T> PushSortedPriv(T val, Element<T> list) {
+	// 	// insert to sorted list
+	// 	if (list == null) {
+	// 		// if the list is empty, create a new element
+	// 		return new Element<T>(val);
+	// 	} else if (list.Data.CompareTo(val) >= 0) {
+	// 		// if passed val is greater or equ, insert before current elem
+	// 		Element<T> newElem = new Element<T>(val);
+	// 		newElem.Next = list;
+	// 		return newElem;
+	// 	} else {
+	// 		// otherwise, continue traversing the list
+	// 		list.Next = PushSortedPriv(val, list.Next);
+	// 		return list;
+	// 	}
+	// }
 
 	public void PopFront(bool toBack = false) {
 		Element<T>? oldHead = _head;

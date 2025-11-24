@@ -32,38 +32,6 @@ static partial class Test {
 		}, "1, 2");
 	}
 
-	static void PushSorted() {
-		GenerateTest("push sorted to empty", () => {
-			LinkedList<int> list = new LinkedList<int>();
-			list.PushSorted(2);
-			return list.PrintList();
-		}, "2");
-
-		GenerateTest("push sorted to front", () => {
-			LinkedList<int> list = new LinkedList<int>();
-			list.PushSorted(2);
-			list.PushSorted(1);
-			return list.PrintList();
-		}, "1, 2");
-
-		GenerateTest("push sorted to back", () => {
-			LinkedList<int> list = new LinkedList<int>();
-			list.PushSorted(1);
-			list.PushSorted(2);
-			list.PushSorted(4);
-			return list.PrintList();
-		}, "1, 2, 4");
-
-		GenerateTest("push sorted to middle", () => {
-			LinkedList<int> list = new LinkedList<int>();
-			list.PushSorted(1);
-			list.PushSorted(2);
-			list.PushSorted(4);
-			list.PushSorted(3);
-			return list.PrintList();
-		}, "1, 2, 3, 4");
-	}
-
 	static void PopFront() {
 		GenerateTest("pop front from empty", () => {
 			LinkedList<int> list = new LinkedList<int>();

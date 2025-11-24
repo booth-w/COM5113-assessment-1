@@ -9,7 +9,6 @@ static partial class Test {
 	static public void Run() {
 		PushFront();
 		PushBack();
-		PushSorted();
 		PopFront();
 		PopBack();
 		PopFirst();
