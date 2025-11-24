@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -21,8 +22,17 @@ public partial class TerrainGridWindow : Form {
 		loadMapButton.Location = new Point(10, 10);
 		loadMapButton.Size = new Size(100, 30);
 		topPanel.Controls.Add(loadMapButton);
+
+		SearchDropdown searchDropdown = new SearchDropdown();
+		// centre the dropdown vertically
+		searchDropdown.Location = new Point(120, (topPanel.Height - searchDropdown.Height) / 2);
+		searchDropdown.Size = new Size(150, 30);
+		topPanel.Controls.Add(searchDropdown);
 	}
 
+	/// <summary>
+	/// A button to open a file dialog for loading from a map file
+	/// </summary>
 	public class LoadMapButton : Button {
 		public LoadMapButton(TerrainGridControl grid) {
 			Text = "Load Map";
@@ -38,6 +48,17 @@ public partial class TerrainGridWindow : Form {
 					grid.LoadTerrainData(terrainData);
 				}
 			};
+		}
+	}
+
+	/// <summary>
+	/// A dropdown menu to select the search algorithm
+	/// </summary>
+	public class SearchDropdown : ComboBox {
+		public SearchDropdown() {
+			DropDownStyle = ComboBoxStyle.DropDownList;
+			// populate the dropdown with the available search algorithms
+			Search.algorithms.Keys.ToList().ForEach(algorithm => Items.Add(algorithm));
 		}
 	}
 }
