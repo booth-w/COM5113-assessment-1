@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public partial class Search {
 	/// <summary>
@@ -10,6 +11,19 @@ public partial class Search {
 		new int[2] { 1, 0 },
 		new int[2] { 0, -1 }
 	};
+
+	/// <summary>
+	/// Dictionary of available search algorithms' names and their corresponding functions
+	/// </summary>
+	public var algorithms = new Dictionary<string, Func<int[,], int[], int[]>>() {
+		{"A*", this.AStar},
+		{"Dijkstra", this.Dijkstra},
+		{"Breadth-First Search", this.BFS},
+		{"Depth-First Search", this.DFS},
+		{"Best-First Search", this.BestFirstSearch},
+		{"Hill Climbing", this.HillClimb}
+	};
+
 
 	/// <summary>
 	/// Calculate the Manhattan distance between two points
