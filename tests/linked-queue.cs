@@ -39,6 +39,13 @@ static partial class Test {
 			queue.Dequeue();
 			return queue.PrintQueue();
 		}, "2, 3");
+
+		GenerateTest("dequeue return value", () => {
+			LinkedQueue<int> queue = new LinkedQueue<int>();
+			queue.Enqueue(1);
+			queue.Enqueue(2);
+			return queue.Dequeue();
+		}, 1);
 	}
 
 	static void QueueClear() {

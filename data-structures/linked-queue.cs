@@ -12,11 +12,11 @@ public class LinkedQueue<T> where T : IComparable<T> {
 	}
 
 	public void Enqueue(T data) {
-		_list.PushFront(data, true);
+		_list.PushBack(data);
 	}
 
-	public void Dequeue() {
-		_list.PopFront();
+	public T Dequeue() {
+		return _list.PopFront();
 	}
 
 	// public LinkedList<T> Peek() {

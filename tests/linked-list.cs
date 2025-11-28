@@ -53,6 +53,13 @@ static partial class Test {
 			list.PopFront();
 			return list.PrintList();
 		}, "");
+
+		GenerateTest("pop front return popped", () => {
+			LinkedList<int> list = new LinkedList<int>();
+			list.PushFront(1);
+			list.PushFront(2);
+			return list.PopFront();
+		}, 2);
 	}
 
 	static void PopBack() {
@@ -76,6 +83,13 @@ static partial class Test {
 			list.PopBack();
 			return list.PrintList();
 		}, "");
+
+		GenerateTest("pop back return popped", () => {
+			LinkedList<int> list = new LinkedList<int>();
+			list.PushBack(1);
+			list.PushBack(2);
+			return list.PopBack();
+		}, 2);
 	}
 
 	static void PopFirst() {

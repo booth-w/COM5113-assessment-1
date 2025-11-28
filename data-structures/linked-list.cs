@@ -76,27 +76,25 @@ public class LinkedList<T> {
 		return listNotEmpty;
 	}
 
-	public void PushFront(T data, bool toBack = false) {
+	public void PushFront(T data) {
 		Element<T> newElement = new Element<T>(data);
 
-		if (!toBack) {
-			newElement.Next = _head;
-			_head = newElement;
-		} else {
-			if (_head == null) {
-				_head = newElement;
-			} else {
-				Element<T>? current = _head;
-				while (current.Next != null) {
-					current = current.Next;
-				}
-				current.Next = newElement;
-			}
-		}
+		newElement.Next = _head;
+		_head = newElement;
 	}
 
 	public void PushBack(T data) {
-		PushFront(data, true);
+		Element<T> newElement = new Element<T>(data);
+
+		if (_head == null) {
+			_head = newElement;
+		} else {
+			Element<T>? current = _head;
+			while (current.Next != null) {
+				current = current.Next;
+			}
+			current.Next = newElement;
+		}
 	}
 
 	// public void PushSorted(T val) {
@@ -120,32 +118,36 @@ public class LinkedList<T> {
 	// 	}
 	// }
 
-	public void PopFront(bool toBack = false) {
+	public T PopFront() {
 		Element<T>? oldHead = _head;
 
-		if (!toBack) {
-			if (oldHead != null) {
-				_head = oldHead.Next;
-			}
-		} else {
-			if (oldHead == null) {
-				return;
-			}
-
-			if (oldHead.Next == null) {
-				_head = null;
-			} else {
-				Element<T>? current = oldHead;
-				while (current.Next.Next != null) {
-					current = current.Next;
-				}
-				current.Next = null;
-			}
+		if (oldHead != null) {
+			_head = oldHead.Next;
+			return oldHead.Data;
 		}
+
+		return default(T);
 	}
 
-	public void PopBack() {
-		PopFront(true);
+	public T PopBack() {
+		Element<T>? oldHead = _head;
+
+		if (oldHead == null) {
+			return default(T);
+		}
+
+		if (oldHead.Next == null) {
+			_head = null;
+			return oldHead.Data;
+		} else {
+			Element<T>? current = oldHead;
+			while (current.Next.Next != null) {
+				current = current.Next;
+			}
+			var toReturn = current.Next.Data;
+			current.Next = null;
+			return toReturn;
+		}
 	}
 
 	public void PopFirst(T data) {
