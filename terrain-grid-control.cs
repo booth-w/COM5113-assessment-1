@@ -121,5 +121,20 @@ public class TerrainGridControl : Control {
 				}
 			}
 		}
+
+		// start and end markers
+		using (var font = new Font("Arial", cellSize / 2)) {
+			using (var brush = new SolidBrush(Color.Red)) {
+				// start
+				int startX = this.start.col * cellSize + cellSize / 4;
+				int startY = this.start.row * cellSize + cellSize / 8;
+				e.Graphics.DrawString("S", font, brush, startX, startY);
+
+				// end
+				int endX = this.end.col * cellSize + cellSize / 4;
+				int endY = this.end.row * cellSize + cellSize / 8;
+				e.Graphics.DrawString("E", font, brush, endX, endY);
+			}
+		}
 	}
 }
