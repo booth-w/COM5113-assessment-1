@@ -36,4 +36,8 @@ public static partial class Search {
 	public static int Heuristic(Coordinate start, Coordinate end) {
 		return Math.Abs(start.row - end.row) + Math.Abs(start.col - end.col);
 	}
+
+	public static bool IsCellEmpty(int[,] grid, Coordinate cell) {
+		return cell.row >= 0 && cell.row < grid.GetLength(0) && cell.col >= 0 && cell.col < grid.GetLength(1) && grid[cell.row, cell.col] != 0;
+	}
 }
