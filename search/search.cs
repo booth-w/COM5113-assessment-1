@@ -10,17 +10,17 @@ public static partial class Search {
 	/// <summary>
 	/// North, East, South, West
 	/// </summary>
-	public static int[][] neighbours = new int[4][] {
-		new int[2] { -1, 0 },
-		new int[2] { 0, 1 },
-		new int[2] { 1, 0 },
-		new int[2] { 0, -1 }
+	public static Coordinate[] neighbours = new Coordinate[] {
+		new Coordinate { row = -1, col = 0 },
+		new Coordinate { row = 0, col = 1 },
+		new Coordinate { row = 1, col = 0 },
+		new Coordinate { row = 0, col = -1 }
 	};
 
 	/// <summary>
 	/// Dictionary of available search algorithms' names and their corresponding functions
 	/// </summary>
-	public static Dictionary<string, Func<int[,], int[], int[], LinkedList<Coordinate>>> algorithms = new Dictionary<string, Func<int[,], int[], int[], LinkedList<Coordinate>>>() {
+	public static Dictionary<string, Func<int[,], Coordinate, Coordinate, LinkedList<Coordinate>>> algorithms = new Dictionary<string, Func<int[,], Coordinate, Coordinate, LinkedList<Coordinate>>>() {
 		{"A*", AStar},
 		{"Dijkstras", Dijkstras},
 		{"Breadth-First Search", BreadthFirst},
@@ -33,7 +33,7 @@ public static partial class Search {
 	/// <summary>
 	/// Calculate the Manhattan distance between two points
 	/// </summary>
-	public static int Heuristic(int[] start, int[] end) {
-		return Math.Abs(start[0] - end[0]) + Math.Abs(start[1] - end[1]);
+	public static int Heuristic(Coordinate start, Coordinate end) {
+		return Math.Abs(start.row - end.row) + Math.Abs(start.col - end.col);
 	}
 }

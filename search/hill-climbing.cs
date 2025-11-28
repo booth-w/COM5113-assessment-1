@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 public static partial class Search {
-	public static LinkedList<Coordinate> HillClimb(int[,] grid, int[] start, int[] end) {
+	public static LinkedList<Coordinate> HillClimb(int[,] grid, Coordinate start, Coordinate end) {
 		return new LinkedList<Coordinate>();
 	}
 }
