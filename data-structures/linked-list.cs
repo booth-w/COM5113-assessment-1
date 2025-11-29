@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class LinkedList<T> {
 	private Element<T>? _head;
@@ -76,6 +77,55 @@ public class LinkedList<T> {
 		return listNotEmpty;
 	}
 
+	/// <summary>
+	/// Sort the linked list against an optional comparison function
+	/// <returns>
+	/// true if the list was modified (not already sorted)
+	/// </returns>
+	/// </summary>
+	public bool Sort(Comparison<T>? comparison = null) {
+		if (_head == null || _head.Next == null) {
+			// list is empty or has one element so already sorted
+			return false;
+		}
+
+		// if comparer is null, use default comparer
+		comparison ??= Comparer<T>.Default.Compare;
+
+		// bubble sort
+		bool hasSwapped = false;
+		bool swapped;
+		do {
+			swapped = false;
+			Element<T>? current = _head;
+			Element<T>? prev = null;
+
+			while (current.Next != null) {
+				if (comparison(current.Data, current.Next.Data) > 0) {
+					// swap elements
+					Element<T> next = current.Next;
+					current.Next = next.Next;
+					next.Next = current;
+
+					if (prev == null) {
+						_head = next;
+					} else {
+						prev.Next = next;
+					}
+
+					prev = next;
+					swapped = true;
+					hasSwapped = true;
+				} else {
+					prev = current;
+					current = current.Next;
+				}
+			}
+		} while (swapped);
+
+		return hasSwapped;
+	}
+
 	public void PushFront(T data) {
 		Element<T> newElement = new Element<T>(data);
 
@@ -96,27 +146,6 @@ public class LinkedList<T> {
 			current.Next = newElement;
 		}
 	}
-
-	// public void PushSorted(T val) {
-	// 	_head = PushSortedPriv(val, _head);
-	// }
-	//
-	// private Element<T> PushSortedPriv(T val, Element<T> list) {
-	// 	// insert to sorted list
-	// 	if (list == null) {
-	// 		// if the list is empty, create a new element
-	// 		return new Element<T>(val);
-	// 	} else if (list.Data.CompareTo(val) >= 0) {
-	// 		// if passed val is greater or equ, insert before current elem
-	// 		Element<T> newElem = new Element<T>(val);
-	// 		newElem.Next = list;
-	// 		return newElem;
-	// 	} else {
-	// 		// otherwise, continue traversing the list
-	// 		list.Next = PushSortedPriv(val, list.Next);
-	// 		return list;
-	// 	}
-	// }
 
 	public T PopFront() {
 		Element<T>? oldHead = _head;

@@ -307,4 +307,57 @@ static partial class Test {
 			return list.Contains(4);
 		}, false);
 	}
+
+	static void Sort() {
+		GenerateTest("sort empty", () => {
+			LinkedList<int> list = new LinkedList<int>();
+			list.Sort();
+			return list.PrintList();
+		}, "");
+
+		GenerateTest("sort single element", () => {
+			LinkedList<int> list = new LinkedList<int>();
+			list.PushFront(1);
+			list.Sort();
+			return list.PrintList();
+		}, "1");
+
+		GenerateTest("sort sorted", () => {
+			LinkedList<int> list = new LinkedList<int>();
+			list.PushBack(1);
+			list.PushBack(2);
+			list.PushBack(3);
+			bool hasChanged = list.Sort();
+			return list.PrintList() == "1, 2, 3" && !hasChanged;
+		}, true);
+
+		GenerateTest("sort multiple elements", () => {
+			LinkedList<int> list = new LinkedList<int>();
+			list.PushBack(3);
+			list.PushBack(1);
+			list.PushBack(2);
+			bool hasChanged = list.Sort();
+			return list.PrintList() == "1, 2, 3" && hasChanged;
+		}, true);
+
+		GenerateTest("sort strings", () => {
+			LinkedList<string> list = new LinkedList<string>();
+			list.PushBack("b");
+			list.PushBack("a");
+			list.PushBack("C");
+			list.PushBack("d");
+			list.PushBack("a");
+			list.Sort(string.CompareOrdinal);
+			return list.PrintList();
+		}, "C, a, a, b, d");
+
+		GenerateTest("sort reverse", () => {
+			LinkedList<int> list = new LinkedList<int>();
+			list.PushBack(1);
+			list.PushBack(3);
+			list.PushBack(2);
+			list.Sort((a, b) => b - a);
+			return list.PrintList();
+		}, "3, 2, 1");
+	}
 }

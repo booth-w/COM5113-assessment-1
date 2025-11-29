@@ -16,6 +16,7 @@ static partial class Test {
 		PopAllOf();
 		Count();
 		Contains();
+		Sort();
 		Enqueue();
 		Dequeue();
 		QueueClear();
