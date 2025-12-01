@@ -6,10 +6,11 @@ class Program {
 		#if DEBUG
 			Test.Init();
 			Test.Run();
-		#else
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new TerrainGridWindow());
+			Console.ReadLine();
 		#endif
+
+		Application.EnableVisualStyles();
+		Application.SetCompatibleTextRenderingDefault(false);
+		Application.Run(new TerrainGridWindow());
 	}
 }

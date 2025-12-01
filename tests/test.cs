@@ -3,7 +3,8 @@ using System.Diagnostics;
 
 static partial class Test {
 	static public void Init() {
-		Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
+		Debug.Listeners.Clear();
+		Debug.Listeners.Add(new Logging());
 	}
 
 	static public void Run() {
@@ -21,10 +22,11 @@ static partial class Test {
 		Dequeue();
 		QueueClear();
 		IsCellEmpty();
+		Debug.WriteLine("[INFO] tests complete");
 	}
 
 	static private void GenerateTest<T>(string name, Func<T> testMethod, T expected) {
-		Debug.WriteLine(name);
+		Debug.WriteLine($"[INFO] {name}");
 		T output = testMethod();
 		Debug.Assert(output.Equals(expected), $"{name}. found: {output}, expected: {expected}");
 	}
