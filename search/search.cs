@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 
 public static partial class Search {
@@ -29,6 +30,21 @@ public static partial class Search {
 		{"Hill Climbing", HillClimb}
 	};
 
+	/// <summary>
+	/// Reconstruct the path from start to end using the cameFrom dictionary
+	/// </summary>
+	private static LinkedList<Coordinate> ReconstructPath(Dictionary<Coordinate, Coordinate> cameFrom, Coordinate current) {
+		LinkedList<Coordinate> finalPath = new LinkedList<Coordinate>();
+		finalPath.PushFront(current);
+
+		while (cameFrom.ContainsKey(current)) {
+			current = cameFrom[current];
+			Debug.WriteLine($"[INFO] {current.row}, {current.col}");
+			finalPath.PushFront(current);
+		}
+
+		return finalPath;
+	}
 
 	/// <summary>
 	/// Calculate the Manhattan distance between two points
