@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 public partial class TerrainGridWindow : Form {
 	private TerrainGridControl grid;
@@ -57,8 +58,19 @@ public partial class TerrainGridWindow : Form {
 	public class SearchDropdown : ComboBox {
 		public SearchDropdown() {
 			DropDownStyle = ComboBoxStyle.DropDownList;
+
 			// populate the dropdown with the available search algorithms
 			Search.algorithms.Keys.ToList().ForEach(algorithm => Items.Add(algorithm));
+
+			// add onchange event listener
+			SelectedIndexChanged += OnChange;
+		}
+
+		private void OnChange(object sender, EventArgs e) {
+			Debug.WriteLine($"[INFO] Triggered dropdown onchange event");
+			var searchAlgorithm = Search.algorithms[(string)SelectedItem];
+			TerrainGridWindow parentWindow = (TerrainGridWindow)this.FindForm();
+			parentWindow.grid.StartSearch(searchAlgorithm);
 		}
 	}
 }

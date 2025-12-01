@@ -71,6 +71,21 @@ public class TerrainGridControl : Control {
 		return true;
 	}
 
+	public void StartSearch(Func <int[,], Search.Coordinate, Search.Coordinate, LinkedList<Search.Coordinate>> searchAlgorithm) {
+		Debug.WriteLine($"[INFO] Selected search algorithm: {searchAlgorithm.Method.Name}");
+
+		// exit if no terrain map loaded
+		if (this.terrainMap == null) {
+			Debug.WriteLine("[WARN] No terrain map loaded. Cannot start search");
+			return;
+		}
+
+		Search.Coordinate startCoord = new Search.Coordinate { row = this.start.row, col = this.start.col };
+		Search.Coordinate endCoord = new Search.Coordinate { row = this.end.row, col = this.end.col };
+		LinkedList<Search.Coordinate> path = searchAlgorithm(this.terrainMap, startCoord, endCoord);
+		path.PrintList();
+	}
+
 	/// <summary>
 	/// Display the terrain map
 	/// </summary>
