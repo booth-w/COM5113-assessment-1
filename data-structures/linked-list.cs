@@ -29,7 +29,11 @@ public class LinkedList<T> {
 		_head = null;
 	}
 
-	public int Count() {
+	public int Count {
+		get { return _Count(); }
+	}
+
+	private int _Count() {
 		int count = 0;
 		Element<T>? current = _head;
 

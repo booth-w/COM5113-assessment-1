@@ -19,11 +19,11 @@ public class LinkedQueue<T> where T : IComparable<T> {
 		return _list.PopFront();
 	}
 
-	// public LinkedList<T> Peek() {
-	// 	return _list.GetFront();
-	// }
+	public int Length {
+		get { return _Length(); }
+	}
 
-	public int Length() {
-		return _list.Count();
+	private int _Length() {
+		return _list.Count;
 	}
 }

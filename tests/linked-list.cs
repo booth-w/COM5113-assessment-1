@@ -267,13 +267,13 @@ static partial class Test {
 	static void Count() {
 		GenerateTest("count 0", () => {
 			LinkedList<int> list = new LinkedList<int>();
-			return list.Count();
+			return list.Count;
 		}, 0);
 
 		GenerateTest("count 1", () => {
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
-			return list.Count();
+			return list.Count;
 		}, 1);
 
 		GenerateTest("count 3", () => {
@@ -281,7 +281,7 @@ static partial class Test {
 			list.PushFront(1);
 			list.PushFront(2);
 			list.PushFront(3);
-			return list.Count();
+			return list.Count;
 		}, 3);
 	}
 
