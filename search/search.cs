@@ -8,6 +8,11 @@ public static partial class Search {
 		public int col;
 	}
 
+	private const byte PATH_FLAG = 0b1000;
+	private const byte CHECKING_FLAG = 0b0100;
+	private const byte OPEN_FLAG = 0b0010;
+	private const byte CLOSED_FLAG = 0b0001;
+
 	/// <summary>
 	/// North, East, South, West
 	/// </summary>
@@ -18,10 +23,17 @@ public static partial class Search {
 		new Coordinate { row = 0, col = -1 }
 	};
 
+	public delegate LinkedList<Coordinate> SearchAlgorithm(
+    int[,] grid,
+    Coordinate start,
+    Coordinate end,
+		ref byte[,] gridSearchState
+	);
+
 	/// <summary>
 	/// Dictionary of available search algorithms' names and their corresponding functions
 	/// </summary>
-	public static Dictionary<string, Func<int[,], Coordinate, Coordinate, LinkedList<Coordinate>>> algorithms = new Dictionary<string, Func<int[,], Coordinate, Coordinate, LinkedList<Coordinate>>>() {
+	public static Dictionary<string, SearchAlgorithm> algorithms = new Dictionary<string, SearchAlgorithm>() {
 		{"A*", AStar},
 		{"Dijkstras", Dijkstras},
 		{"Breadth-First Search", BreadthFirst},
@@ -46,6 +58,15 @@ public static partial class Search {
 		return finalPath;
 	}
 
+	public static void WalkPath(LinkedList<Search.Coordinate> path, ref byte[,] gridSearchState) {
+		while (path.Count > 0) {
+			Search.Coordinate coord = path.PopFront();
+			gridSearchState[coord.row, coord.col] ^= Search.PATH_FLAG;
+
+			RunAnimationFrame(100);
+		}
+	}
+
 	/// <summary>
 	/// Calculate the Manhattan distance between two points
 	/// </summary>
@@ -55,5 +76,13 @@ public static partial class Search {
 
 	public static bool IsCellEmpty(int[,] grid, Coordinate cell) {
 		return cell.row >= 0 && cell.row < grid.GetLength(0) && cell.col >= 0 && cell.col < grid.GetLength(1) && grid[cell.row, cell.col] != 0;
+	}
+
+	public static void RunAnimationFrame(int delay) {
+		var parentForm = System.Windows.Forms.Application.OpenForms[0] as TerrainGridWindow;
+		parentForm.grid.Invalidate();
+		System.Windows.Forms.Application.DoEvents();
+		System.Threading.Thread.Sleep(delay);
+
 	}
 }

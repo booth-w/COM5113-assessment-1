@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 
 public partial class TerrainGridWindow : Form {
-	private TerrainGridControl grid;
+	public TerrainGridControl grid;
 
 	public TerrainGridWindow() {
 		InitializeComponent();
