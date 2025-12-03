@@ -151,11 +151,12 @@ public class TerrainGridControl : Control {
 			return;
 		}
 
-		using (var pen = new Pen(Color.Black)) {
+		using (Pen pen = new Pen(Color.Black)) {
 			for (int y = 0; y < rows; y++) {
 				for (int x = 0; x < cols; x++) {
 					int terrainValue = this.terrainMap[y, x];
 					Color colour;
+					Color stateColour = Color.Transparent;
 
 					if (!this.terrainColours.TryGetValue(terrainValue, out colour)) {
 						colour = Color.Magenta;
@@ -163,30 +164,44 @@ public class TerrainGridControl : Control {
 
 					// get the colour overlay from the search state
 					byte searchState = this.gridSearchState[y, x];
-					// Debug.WriteLine($"[INFO] Cell ({x}, {y}) search state: {Convert.ToString(searchState, 2).PadLeft(5, '0')}");
+
 					// most significant bit has highest priority
-					foreach (var state in this.searchStateColours.Keys.OrderByDescending(k => k)) {
+					foreach (byte state in this.searchStateColours.Keys.OrderByDescending(k => k)) {
 						if ((searchState & state) != 0) {
-							colour = this.searchStateColours[state];
+							stateColour = this.searchStateColours[state];
 							break;
 						}
 					}
 
 					int px = x * cellSize;
 					int py = y * cellSize;
-					var rect = new Rectangle(px, py, cellSize, cellSize);
+					Rectangle rect = new Rectangle(px, py, cellSize, cellSize);
 
-					using (var brush = new SolidBrush(colour)) {
+					int posOffset = cellSize / 8;
+					int sizeOffset = cellSize / 4;
+					Rectangle stateRect = new Rectangle(px + posOffset, py + posOffset, cellSize - sizeOffset, cellSize - sizeOffset);
+
+					// fill the base terrain colour
+					using (SolidBrush brush = new SolidBrush(colour)) {
 						e.Graphics.FillRectangle(brush, rect);
 					}
+
+					// overlay the search state colour
+					if (stateColour != Color.Transparent) {
+						using (Pen statePen = new Pen(stateColour, sizeOffset)) {
+							e.Graphics.DrawRectangle(statePen, stateRect);
+						}
+					}
+
+					// cell border
 					e.Graphics.DrawRectangle(pen, rect);
 				}
 			}
 		}
 
 		// start and end markers
-		using (var font = new Font("Arial", cellSize / 2)) {
-			using (var brush = new SolidBrush(Color.Red)) {
+		using (Font font = new Font("Arial", cellSize / 2)) {
+			using (SolidBrush brush = new SolidBrush(Color.Red)) {
 				// start
 				int startX = this.start.col * cellSize + cellSize / 4;
 				int startY = this.start.row * cellSize + cellSize / 8;
