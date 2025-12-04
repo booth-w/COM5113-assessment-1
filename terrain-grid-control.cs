@@ -204,6 +204,10 @@ public class TerrainGridControl : Control {
 		Search.Coordinate startCoord = new Search.Coordinate { row = this.start.row, col = this.start.col };
 		Search.Coordinate endCoord = new Search.Coordinate { row = this.end.row, col = this.end.col };
 		LinkedList<Search.Coordinate> path = searchAlgorithm.Run(this.terrainMap, startCoord, endCoord, ref this.gridSearchState);
+
+		if (path.Count == 0) {
+			MessageBox.Show("No path to the end could be found", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
 	}
 
 
