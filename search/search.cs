@@ -61,10 +61,8 @@ public abstract class Search {
 	}
 
 	protected static void WalkPath(LinkedList<Search.Coordinate> path, ref byte[,] gridSearchState) {
-		while (path.Count > 0) {
-			Search.Coordinate coord = path.PopFront();
-			gridSearchState[coord.row, coord.col] ^= Search.PATH_FLAG;
-
+		foreach (Coordinate step in path) {
+			gridSearchState[step.row, step.col] ^= PATH_FLAG;
 			RunAnimationFrame(100);
 		}
 	}
