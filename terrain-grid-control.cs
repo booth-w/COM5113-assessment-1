@@ -192,8 +192,8 @@ public class TerrainGridControl : Control {
 		return true;
 	}
 
-	public void StartSearch(Search.SearchAlgorithm searchAlgorithm) {
-		Debug.WriteLine($"[INFO] Selected search algorithm: {searchAlgorithm.Method.Name}");
+	public void StartSearch(Search.IAlgorithm searchAlgorithm) {
+		Debug.WriteLine($"[INFO] Selected search algorithm: {searchAlgorithm.GetType().Name}");
 
 		// exit if no terrain map loaded
 		if (this.terrainMap == null) {
@@ -203,7 +203,7 @@ public class TerrainGridControl : Control {
 
 		Search.Coordinate startCoord = new Search.Coordinate { row = this.start.row, col = this.start.col };
 		Search.Coordinate endCoord = new Search.Coordinate { row = this.end.row, col = this.end.col };
-		LinkedList<Search.Coordinate> path = searchAlgorithm(this.terrainMap, startCoord, endCoord, ref this.gridSearchState);
+		LinkedList<Search.Coordinate> path = searchAlgorithm.Run(this.terrainMap, startCoord, endCoord, ref this.gridSearchState);
 	}
 
 

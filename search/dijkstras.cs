@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
-public static partial class Search {
-	public static LinkedList<Coordinate> Dijkstras(int[,] grid, Coordinate start, Coordinate end, ref byte[,] gridSearchState) {
+public class Dijkstras : Search, Search.IAlgorithm {
+	public LinkedList<Coordinate> Run(int[,] grid, Coordinate start, Coordinate end, ref byte[,] gridSearchState) {
 		return new LinkedList<Coordinate>();
 	}
 }

@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-public static partial class Search {
+public class AStar : Search, Search.IAlgorithm {
 	private struct AStarScore {
 		public int cummulative;
 		public int heuristic;
 	}
 
-	public static LinkedList<Coordinate> AStar(int[,] grid, Coordinate start, Coordinate end, ref byte[,] gridSearchState) {
+	public LinkedList<Coordinate> Run(int[,] grid, Coordinate start, Coordinate end, ref byte[,] gridSearchState) {
 		Debug.WriteLine($"[INFO] Starting A* from ({start.row}, {start.col}) to ({end.row}, {end.col})");
 
 		LinkedList<Coordinate> openSet = new LinkedList<Coordinate>();
