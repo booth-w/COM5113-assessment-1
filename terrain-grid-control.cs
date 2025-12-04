@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -13,13 +14,12 @@ public class TerrainGridControl : Control {
 
 	/// <summary>
 	/// Bit flag representation of the state of each cell for the animation
-	/// 0 0 0 0 0
-	/// | | | | |
-	/// | | | | .__ walked so far in final animation (WALKED_FLAG)
-	/// | | | .____ final path (PATH_FLAG)
-	/// | | .______ in closed set (CLOSED_FLAG)
-	/// | .________ in open set (OPEN_FLAG)
-	/// .__________ currently checking (CHECKING_FLAG)
+	/// 0 0 0 0
+	/// | | | |
+	/// | | | .__ in closed set (CLOSED_FLAG)
+	/// | | .____ in open set (OPEN_FLAG)
+	/// | .______ currently checking (CHECKING_FLAG)
+	/// .________ final path (PATH_FLAG)
 	/// </summary>
 	private byte[,] gridSearchState;
 
@@ -77,8 +77,16 @@ public class TerrainGridControl : Control {
 	/// </summary>
 	/// <param name="terrainData">Array of strings representing the terrain data</param>
 	public void LoadTerrainData(string[] terrainData) {
+		// strip empty lines and trim whitespace
+		terrainData = terrainData
+			.Where(line => !string.IsNullOrWhiteSpace(line))
+			.Select(line => line.Trim())
+			.ToArray();
+
 		if (!IsValidTerrainData(terrainData)) {
-			throw new ArgumentException("Invalid terrain data");
+			Debug.WriteLine("[ERROR] Invalid terrain data");
+			MessageBox.Show("Invalid terrain data provided.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			return;
 		}
 
 		this.rows = int.Parse(terrainData[0].Split(' ')[0]);
@@ -103,7 +111,84 @@ public class TerrainGridControl : Control {
 		this.Invalidate();
 	}
 
-	private bool IsValidTerrainData(string[] terrainData) {
+	/// <summary>
+	/// Validate the terrain data format
+	/// such that it meets the expected structure of
+	/// rows cols
+	/// start_row start_col possitioned in the grid and not a wall
+	/// end_row end_col possitioned in the grid and not a wall
+	/// grid of ints 0 to 3 of size rows x cols
+	public bool IsValidTerrainData(string[] terrainData) {
+		if (terrainData.Length < 4) {
+			Debug.WriteLine("[ERROR] Terrain data has less than 4 lines");
+			return false;
+		}
+
+		// validate first 3 lines
+		for (int row = 0; row < 3; row++) {
+			if (!Regex.IsMatch(terrainData[row], @"^\d+\s+\d+$")) {
+				Debug.WriteLine($"[ERROR] Terrain data line {row} is not in the expected format. Found: '{terrainData[row]}'");
+				return false;
+			}
+		}
+
+		// validate number of rows
+		int expectedRows = int.Parse(terrainData[0].Split(' ')[0]);
+		int expectedCols = int.Parse(terrainData[0].Split(' ')[1]);
+		if (terrainData.Length != expectedRows + 3) {
+			Debug.WriteLine($"[ERROR] Terrain data does not have the expected number of rows. Found: {terrainData.Length - 3}, Expected: {expectedRows}");
+			return false;
+		}
+
+		// validate terrain grid
+		for (int row = 0; row < expectedRows; row++) {
+			string[] terrainRow = terrainData[row + 3].Split(' ');
+
+			// validate number of cols
+			if (terrainRow.Length != expectedCols) {
+				Debug.WriteLine($"[ERROR] Terrain data row {row + 3} does not have the expected number of columns. Found: {terrainRow.Length}, Expected: {expectedCols}");
+				return false;
+			}
+
+			// validate cell values
+			foreach (string cell in terrainRow) {
+				if (!Regex.IsMatch(cell, @"^[0-3]$")) {
+					Debug.WriteLine($"[ERROR] Terrain data row {row + 3} has an invalid cell value: '{cell}'");
+					return false;
+				}
+			}
+		}
+
+		int startRow = int.Parse(terrainData[1].Split(' ')[0]);
+		int startCol = int.Parse(terrainData[1].Split(' ')[1]);
+		int endRow = int.Parse(terrainData[2].Split(' ')[0]);
+		int endCol = int.Parse(terrainData[2].Split(' ')[1]);
+
+		// check start pos is in the grid
+		if (startRow < 0 || startRow >= expectedRows || startCol < 0 || startCol >= expectedCols) {
+			Debug.WriteLine($"[ERROR] Start position ({startRow}, {startCol}) is out of bounds");
+			return false;
+		}
+
+		// check end pos is in the grid
+		if (endRow < 0 || endRow >= expectedRows || endCol < 0 || endCol >= expectedCols) {
+			Debug.WriteLine($"[ERROR] End position ({endRow}, {endCol}) is out of bounds");
+			return false;
+		}
+
+		// check start pos is not a wall
+		if (terrainData[startRow + 3].Split(' ')[startCol] == "0") {
+			Debug.WriteLine($"[ERROR] Start position ({startRow}, {startCol}) is a wall");
+			return false;
+		}
+
+		// check end pos is not a wall
+		if (terrainData[endRow + 3].Split(' ')[endCol] == "0") {
+			Debug.WriteLine($"[ERROR] End position ({endRow}, {endCol}) is a wall");
+			return false;
+		}
+
+		Debug.WriteLine("[INFO] Terrain data is valid");
 		return true;
 	}
 
