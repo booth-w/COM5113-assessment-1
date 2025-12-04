@@ -1,11 +1,25 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
-public class LinkedList<T> {
+public class LinkedList<T> : IEnumerable<T> {
 	private Element<T>? _head;
 
 	public LinkedList() {
 		_head = null;
+	}
+
+	public IEnumerator<T> GetEnumerator() {
+		Element<T>? current = _head;
+
+		while (current != null) {
+			yield return current.Data;
+			current = current.Next;
+		}
+	}
+
+	IEnumerator IEnumerable.GetEnumerator() {
+		return GetEnumerator();
 	}
 
 	public string PrintList() {
