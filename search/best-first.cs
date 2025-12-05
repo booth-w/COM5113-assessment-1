@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-public class BestFirst : Search, Search.IAlgorithm {
-	public LinkedList<Coordinate> Run(int[,] grid, Coordinate start, Coordinate end, ref byte[,] gridSearchState) {
+public class BestFirst : Search, Search.IAlgorithm
+{
+	public LinkedList<Coordinate> Run(int[,] grid, Coordinate start, Coordinate end, ref byte[,] gridSearchState)
+	{
 		Debug.WriteLine($"[INFO] Starting Best-First from ({start.row}, {start.col}) to ({end.row}, {end.col})");
 
 		LinkedList<Coordinate> openSet = new LinkedList<Coordinate>();
@@ -15,12 +17,14 @@ public class BestFirst : Search, Search.IAlgorithm {
 		coordScore[start] = Heuristic(start, end);
 		gridSearchState[start.row, start.col] ^= OPEN_FLAG;
 
-		while (openSet.Count > 0) {
+		while (openSet.Count > 0)
+		{
 			Coordinate current = openSet.PopFront();
 			gridSearchState[current.row, current.col] ^= (OPEN_FLAG | CHECKING_FLAG);
 
 			// reconstruct and exit if the end is found
-			if (current.Equals(end)) {
+			if (current.Equals(end))
+			{
 				Debug.WriteLine("[INFO] Best-First found a path to the end");
 				LinkedList<Coordinate> path = ReconstructPath(cameFrom, current);
 				WalkPath(path, ref gridSearchState);
@@ -32,15 +36,18 @@ public class BestFirst : Search, Search.IAlgorithm {
 			RunAnimationFrame(animationDelay);
 
 			// itterate over the neighbours
-			for (int i = neighbours.Length - 1; i >= 0; i--) {
+			for (int i = neighbours.Length - 1; i >= 0; i--)
+			{
 				Coordinate neighbour = neighbours[i];
-				Coordinate next = new Coordinate {
+				Coordinate next = new Coordinate
+				{
 					row = current.row + neighbour.row,
 					col = current.col + neighbour.col
 				};
 
 				// skip if target cell is a wall or in closed set
-				if (!IsCellEmpty(grid, next) || closedSet.Contains(next)) {
+				if (!IsCellEmpty(grid, next) || closedSet.Contains(next))
+				{
 					continue;
 				}
 
@@ -48,11 +55,13 @@ public class BestFirst : Search, Search.IAlgorithm {
 
 				// generate scores for neighbour and add to open set
 				int nextHeuristic = Heuristic(next, end);
-				if (!coordScore.ContainsKey(next) || nextHeuristic < coordScore[next]) {
+				if (!coordScore.ContainsKey(next) || nextHeuristic < coordScore[next])
+				{
 					coordScore[next] = nextHeuristic;
 					cameFrom[next] = current;
 
-					if (!openSet.Contains(next)) {
+					if (!openSet.Contains(next))
+					{
 						openSet.PushFront(next);
 						gridSearchState[next.row, next.col] ^= OPEN_FLAG;
 					}
@@ -61,7 +70,8 @@ public class BestFirst : Search, Search.IAlgorithm {
 				// sort open set by lowest heuristic first
 				openSet.Sort((a, b) => coordScore[a].CompareTo(coordScore[b]));
 
-				if (toDraw) {
+				if (toDraw)
+				{
 					RunAnimationFrame(animationDelay);
 				}
 			}

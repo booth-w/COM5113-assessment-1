@@ -2,8 +2,10 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-public abstract class Search {
-	public interface IAlgorithm {
+public abstract class Search
+{
+	public interface IAlgorithm
+	{
 		LinkedList<Coordinate> Run(
 			int[,] grid,
 			Coordinate start,
@@ -12,7 +14,8 @@ public abstract class Search {
 		);
 	}
 
-	public struct Coordinate {
+	public struct Coordinate
+	{
 		public int row;
 		public int col;
 	}
@@ -27,7 +30,8 @@ public abstract class Search {
 	/// <summary>
 	/// North, East, South, West
 	/// </summary>
-	public static Coordinate[] neighbours = new Coordinate[] {
+	public static Coordinate[] neighbours = new Coordinate[]
+	{
 		new Coordinate { row = -1, col = 0 },
 		new Coordinate { row = 0, col = 1 },
 		new Coordinate { row = 1, col = 0 },
@@ -37,7 +41,8 @@ public abstract class Search {
 	/// <summary>
 	/// Dictionary of available search algorithms' names and their corresponding functions
 	/// </summary>
-	public static Dictionary<string, IAlgorithm> algorithms = new Dictionary<string, IAlgorithm>() {
+	public static Dictionary<string, IAlgorithm> algorithms = new Dictionary<string, IAlgorithm>()
+	{
 		{"A*", new AStar()},
 		{"Dijkstras", new Dijkstras()},
 		{"Breadth-First Search", new BreadthFirst()},
@@ -49,11 +54,13 @@ public abstract class Search {
 	/// <summary>
 	/// Reconstruct the path from start to end using the cameFrom dictionary
 	/// </summary>
-	protected static LinkedList<Coordinate> ReconstructPath(Dictionary<Coordinate, Coordinate> cameFrom, Coordinate current) {
+	protected static LinkedList<Coordinate> ReconstructPath(Dictionary<Coordinate, Coordinate> cameFrom, Coordinate current)
+	{
 		LinkedList<Coordinate> finalPath = new LinkedList<Coordinate>();
 		finalPath.PushFront(current);
 
-		while (cameFrom.ContainsKey(current)) {
+		while (cameFrom.ContainsKey(current))
+		{
 			current = cameFrom[current];
 			Debug.WriteLine($"[INFO] {current.row}, {current.col}");
 			finalPath.PushFront(current);
@@ -62,8 +69,10 @@ public abstract class Search {
 		return finalPath;
 	}
 
-	protected static void WalkPath(LinkedList<Search.Coordinate> path, ref byte[,] gridSearchState) {
-		foreach (Coordinate step in path) {
+	protected static void WalkPath(LinkedList<Search.Coordinate> path, ref byte[,] gridSearchState)
+	{
+		foreach (Coordinate step in path)
+		{
 			gridSearchState[step.row, step.col] ^= PATH_FLAG;
 			RunAnimationFrame(100);
 		}
@@ -72,15 +81,18 @@ public abstract class Search {
 	/// <summary>
 	/// Calculate the Manhattan distance between two points
 	/// </summary>
-	protected static int Heuristic(Coordinate start, Coordinate end) {
+	protected static int Heuristic(Coordinate start, Coordinate end)
+	{
 		return Math.Abs(start.row - end.row) + Math.Abs(start.col - end.col);
 	}
 
-	public static bool IsCellEmpty(int[,] grid, Coordinate cell) {
+	public static bool IsCellEmpty(int[,] grid, Coordinate cell)
+	{
 		return cell.row >= 0 && cell.row < grid.GetLength(0) && cell.col >= 0 && cell.col < grid.GetLength(1) && grid[cell.row, cell.col] != 0;
 	}
 
-	public static void RunAnimationFrame(int delay) {
+	public static void RunAnimationFrame(int delay)
+	{
 		TerrainGridWindow parentForm = System.Windows.Forms.Application.OpenForms[0] as TerrainGridWindow;
 		parentForm.grid.Invalidate();
 		System.Windows.Forms.Application.DoEvents();

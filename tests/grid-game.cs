@@ -1,10 +1,14 @@
 using System;
 using System.Diagnostics;
 
-public partial class Test {
-	static void IsCellEmpty() {
-		GenerateTest("cell is empty", () => {
-			int[,] grid = {
+public partial class Test
+{
+	static void IsCellEmpty()
+	{
+		GenerateTest("cell is empty", () =>
+		{
+			int[,] grid =
+			{
 				{ 1, 0, 0 },
 				{ 1, 0, 1 },
 				{ 2, 1, 1 }
@@ -12,8 +16,10 @@ public partial class Test {
 			return Search.IsCellEmpty(grid, new Search.Coordinate{ row = 0, col = 0 });
 		}, true);
 
-		GenerateTest("cell is blocked", () => {
-			int[,] grid = {
+		GenerateTest("cell is blocked", () =>
+		{
+			int[,] grid =
+			{
 				{ 1, 0, 0 },
 				{ 1, 0, 1 },
 				{ 2, 1, 1 }
@@ -22,7 +28,8 @@ public partial class Test {
 		}, false);
 
 		GenerateTest("cell out of bounds", () => {
-			int[,] grid = {
+			int[,] grid =
+			{
 				{ 1, 0, 0 },
 				{ 1, 0, 1 },
 				{ 2, 1, 1 }

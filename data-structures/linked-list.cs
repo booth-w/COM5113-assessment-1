@@ -2,56 +2,71 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class LinkedList<T> : IEnumerable<T> {
+public class LinkedList<T> : IEnumerable<T>
+{
 	private Element<T>? _head;
 
-	public LinkedList() {
+	public LinkedList()
+	{
 		_head = null;
 	}
 
-	public IEnumerator<T> GetEnumerator() {
+	public IEnumerator<T> GetEnumerator()
+	{
 		Element<T>? current = _head;
 
-		while (current != null) {
+		while (current != null)
+		{
 			yield return current.Data;
 			current = current.Next;
 		}
 	}
 
-	IEnumerator IEnumerable.GetEnumerator() {
+	IEnumerator IEnumerable.GetEnumerator()
+	{
 		return GetEnumerator();
 	}
 
-	public string PrintList() {
+	public string PrintList()
+	{
 		Element<T>? current = _head;
 
 		string toPrint = "";
-		while (current != null) {
+		while (current != null)
+		{
 			toPrint += current.Data + ", ";
 			current = current.Next;
 		}
 
 		// remove last ", "
-		if (toPrint.Length >= 2) {
+		if (toPrint.Length >= 2)
+		{
 			toPrint = toPrint[..^2];
 		}
 
 		return toPrint;
 	}
 
-	public void Clear() {
+	public void Clear()
+	{
 		_head = null;
 	}
 
-	public int Count {
-		get { return _Count(); }
+	public int Count
+	{
+		get
+		{
+			return _Count();
+		}
 	}
 
-	private int _Count() {
+	private int _Count()
+	{
 		int count = 0;
 		Element<T>? current = _head;
 
-		while (current != null) {
+		while (current != null)
+		{
 			count++;
 			current = current.Next;
 		}
@@ -59,11 +74,14 @@ public class LinkedList<T> : IEnumerable<T> {
 		return count;
 	}
 
-	public bool Contains(T data) {
+	public bool Contains(T data)
+	{
 		Element<T>? current = _head;
 
-		while (current != null) {
-			if (current.Data.Equals(data)) {
+		while (current != null)
+		{
+			if (current.Data.Equals(data))
+			{
 				return true;
 			}
 			current = current.Next;
@@ -72,23 +90,29 @@ public class LinkedList<T> : IEnumerable<T> {
 		return false;
 	}
 
-	public void Copy(Element<T>? newList) {
+	public void Copy(Element<T>? newList)
+	{
 		// TODO
-		if (_head == null) {
+		if (_head == null)
+		{
 			return;
 		}
 
 		Element<T>? current = _head;
-		while (current != null) {
+		while (current != null)
+		{
 
 		}
 	}
 
-	public bool GetFront(ref T data) {
+	public bool GetFront(ref T data)
+	{
 		bool listNotEmpty = _head != null;
-		if (listNotEmpty) {
+		if (listNotEmpty)
+		{
 			data = _head.Data;
-		} else {
+		} else
+		{
 			Console.WriteLine("Cannot get front of an empty list");
 		}
 
@@ -101,8 +125,10 @@ public class LinkedList<T> : IEnumerable<T> {
 	/// true if the list was modified (not already sorted)
 	/// </returns>
 	/// </summary>
-	public bool Sort(Comparison<T>? comparison = null) {
-		if (_head == null || _head.Next == null) {
+	public bool Sort(Comparison<T>? comparison = null)
+	{
+		if (_head == null || _head.Next == null)
+		{
 			// list is empty or has one element so already sorted
 			return false;
 		}
@@ -113,28 +139,34 @@ public class LinkedList<T> : IEnumerable<T> {
 		// bubble sort
 		bool hasSwapped = false;
 		bool swapped;
-		do {
+		do
+		{
 			swapped = false;
 			Element<T>? current = _head;
 			Element<T>? prev = null;
 
-			while (current.Next != null) {
-				if (comparison(current.Data, current.Next.Data) > 0) {
+			while (current.Next != null)
+			{
+				if (comparison(current.Data, current.Next.Data) > 0)
+				{
 					// swap elements
 					Element<T> next = current.Next;
 					current.Next = next.Next;
 					next.Next = current;
 
-					if (prev == null) {
+					if (prev == null)
+					{
 						_head = next;
-					} else {
+					} else
+					{
 						prev.Next = next;
 					}
 
 					prev = next;
 					swapped = true;
 					hasSwapped = true;
-				} else {
+				} else
+				{
 					prev = current;
 					current = current.Next;
 				}
@@ -144,31 +176,38 @@ public class LinkedList<T> : IEnumerable<T> {
 		return hasSwapped;
 	}
 
-	public void PushFront(T data) {
+	public void PushFront(T data)
+	{
 		Element<T> newElement = new Element<T>(data);
 
 		newElement.Next = _head;
 		_head = newElement;
 	}
 
-	public void PushBack(T data) {
+	public void PushBack(T data)
+	{
 		Element<T> newElement = new Element<T>(data);
 
-		if (_head == null) {
+		if (_head == null)
+		{
 			_head = newElement;
-		} else {
+		} else
+		{
 			Element<T>? current = _head;
-			while (current.Next != null) {
+			while (current.Next != null)
+			{
 				current = current.Next;
 			}
 			current.Next = newElement;
 		}
 	}
 
-	public T PopFront() {
+	public T PopFront()
+	{
 		Element<T>? oldHead = _head;
 
-		if (oldHead != null) {
+		if (oldHead != null)
+		{
 			_head = oldHead.Next;
 			return oldHead.Data;
 		}
@@ -176,19 +215,24 @@ public class LinkedList<T> : IEnumerable<T> {
 		return default(T);
 	}
 
-	public T PopBack() {
+	public T PopBack()
+	{
 		Element<T>? oldHead = _head;
 
-		if (oldHead == null) {
+		if (oldHead == null)
+		{
 			return default(T);
 		}
 
-		if (oldHead.Next == null) {
+		if (oldHead.Next == null)
+		{
 			_head = null;
 			return oldHead.Data;
-		} else {
+		} else
+		{
 			Element<T>? current = oldHead;
-			while (current.Next.Next != null) {
+			while (current.Next.Next != null)
+			{
 				current = current.Next;
 			}
 			var toReturn = current.Next.Data;
@@ -197,19 +241,24 @@ public class LinkedList<T> : IEnumerable<T> {
 		}
 	}
 
-	public void PopFirst(T data) {
-		if (_head == null) {
+	public void PopFirst(T data)
+	{
+		if (_head == null)
+		{
 			return;
 		}
 
-		if (_head.Data.Equals(data)) {
+		if (_head.Data.Equals(data))
+		{
 			_head = _head.Next;
 			return;
 		}
 
 		Element<T>? current = _head;
-		while (current.Next != null) {
-			if (current.Next.Data.Equals(data)) {
+		while (current.Next != null)
+		{
+			if (current.Next.Data.Equals(data))
+			{
 				current.Next = current.Next.Next;
 				return;
 			}
@@ -217,37 +266,47 @@ public class LinkedList<T> : IEnumerable<T> {
 		}
 	}
 
-	public void PopFirstRecursive(T val) {
+	public void PopFirstRecursive(T val)
+	{
 		_head = PopFirstRecursivePriv(val, _head);
 	}
 
-	private Element<T> PopFirstRecursivePriv(T val, Element<T> list) {
+	private Element<T> PopFirstRecursivePriv(T val, Element<T> list)
+	{
 		// remove all occurrences of val from list
-		if (list == null) {
+		if (list == null)
+		{
 			// if list is empty, return null
 			return null;
-		} else if (list.Data.Equals(val)) {
+		} else if (list.Data.Equals(val))
+		{
 			// if current elem is val, skip it
 			return list.Next;
-		} else {
+		} else
+		{
 			// otherwise, continue traversing the list
 			list.Next = PopFirstRecursivePriv(val, list.Next);
 			return list;
 		}
 	}
 
-	public void PopAllOf(T val) {
+	public void PopAllOf(T val)
+	{
 		_head = PopAllOfPriv(val, _head);
 	}
 
-	private Element<T> PopAllOfPriv(T val, Element<T> list) {
-		if (list == null) {
+	private Element<T> PopAllOfPriv(T val, Element<T> list)
+	{
+		if (list == null)
+		{
 			// if list is empty, return null
 			return null;
-		} else if (list.Data.Equals(val)) {
+		} else if (list.Data.Equals(val))
+		{
 			// if current elem is val, remove it
 			return PopAllOfPriv(val, list.Next);
-		} else {
+		} else
+		{
 			// otherwise, continue traversing the list
 			list.Next = PopAllOfPriv(val, list.Next);
 			return list;

@@ -1,15 +1,19 @@
 using System;
 using System.Diagnostics;
 
-static partial class Test {
-	static void PushFront() {
-		GenerateTest("push front to empty", () => {
+static partial class Test
+{
+	static void PushFront()
+	{
+		GenerateTest("push front to empty", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			return list.PrintList();
 		}, "1");
 
-		GenerateTest("push front to non-empty", () => {
+		GenerateTest("push front to non-empty", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -17,14 +21,17 @@ static partial class Test {
 		}, "2, 1");
 	}
 
-	static void PushBack() {
-		GenerateTest("push back to empty", () => {
+	static void PushBack()
+	{
+		GenerateTest("push back to empty", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushBack(1);
 			return list.PrintList();
 		}, "1");
 
-		GenerateTest("push back to non-empty", () => {
+		GenerateTest("push back to non-empty", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushBack(1);
 			list.PushBack(2);
@@ -33,13 +40,15 @@ static partial class Test {
 	}
 
 	static void PopFront() {
-		GenerateTest("pop front from empty", () => {
+		GenerateTest("pop front from empty", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PopFront();
 			return list.PrintList();
 		}, "");
 
-		GenerateTest("pop front from non-empty", () => {
+		GenerateTest("pop front from non-empty", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -47,14 +56,16 @@ static partial class Test {
 			return list.PrintList();
 		}, "1");
 
-		GenerateTest("pop front last element", () => {
+		GenerateTest("pop front last element", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PopFront();
 			return list.PrintList();
 		}, "");
 
-		GenerateTest("pop front return popped", () => {
+		GenerateTest("pop front return popped", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -62,29 +73,34 @@ static partial class Test {
 		}, 2);
 	}
 
-	static void PopBack() {
-		GenerateTest("pop back from empty", () => {
+	static void PopBack()
+	{
+		GenerateTest("pop back from empty", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PopBack();
 			return list.PrintList();
 		}, "");
 
-		GenerateTest("pop back from non-empty", () => {
+		GenerateTest("pop back from non-empty", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushBack(1);
 			list.PushBack(2);
 			list.PopBack();
 			return list.PrintList();
-			}, "1");
+		}, "1");
 
-		GenerateTest("pop back last element", () => {
+		GenerateTest("pop back last element", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushBack(1);
 			list.PopBack();
 			return list.PrintList();
 		}, "");
 
-		GenerateTest("pop back return popped", () => {
+		GenerateTest("pop back return popped", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushBack(1);
 			list.PushBack(2);
@@ -92,14 +108,17 @@ static partial class Test {
 		}, 2);
 	}
 
-	static void PopFirst() {
-		GenerateTest("pop first from empty", () => {
+	static void PopFirst()
+	{
+		GenerateTest("pop first from empty", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PopFirst(1);
 			return list.PrintList();
 		}, "");
 
-		GenerateTest("pop first does not exist", () => {
+		GenerateTest("pop first does not exist", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -108,14 +127,16 @@ static partial class Test {
 			return list.PrintList();
 		}, "3, 2, 1");
 
-		GenerateTest("pop first only element", () => {
+		GenerateTest("pop first only element", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PopFirst(1);
 			return list.PrintList();
 		}, "");
 
-		GenerateTest("pop first middle", () => {
+		GenerateTest("pop first middle", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -124,7 +145,8 @@ static partial class Test {
 			return list.PrintList();
 		}, "3, 1");
 
-		GenerateTest("pop first head", () => {
+		GenerateTest("pop first head", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -133,7 +155,8 @@ static partial class Test {
 			return list.PrintList();
 		}, "2, 1");
 
-		GenerateTest("pop first tail", () => {
+		GenerateTest("pop first tail", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -142,7 +165,8 @@ static partial class Test {
 			return list.PrintList();
 		}, "3, 2");
 
-		GenerateTest("pop first multiple", () => {
+		GenerateTest("pop first multiple", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(2);
 			list.PushFront(1);
@@ -152,7 +176,8 @@ static partial class Test {
 			return list.PrintList();
 		}, "3, 1, 2");
 
-		GenerateTest("pop first last", () => {
+		GenerateTest("pop first last", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PopFirst(1);
@@ -160,14 +185,17 @@ static partial class Test {
 		}, "");
 	}
 
-	static void PopFirstRecursive() {
-		GenerateTest("pop first recursive from empty", () => {
+	static void PopFirstRecursive()
+	{
+		GenerateTest("pop first recursive from empty", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PopFirst(1);
 			return list.PrintList();
 		}, "");
 
-		GenerateTest("pop first recursive does not exist", () => {
+		GenerateTest("pop first recursive does not exist", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -176,14 +204,16 @@ static partial class Test {
 			return list.PrintList();
 		}, "3, 2, 1");
 
-		GenerateTest("pop first recursive only element", () => {
+		GenerateTest("pop first recursive only element", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PopFirst(1);
 			return list.PrintList();
 		}, "");
 
-		GenerateTest("pop first recursive middle", () => {
+		GenerateTest("pop first recursive middle", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -192,7 +222,8 @@ static partial class Test {
 			return list.PrintList();
 		}, "3, 1");
 
-		GenerateTest("pop first recursive head", () => {
+		GenerateTest("pop first recursive head", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -201,7 +232,8 @@ static partial class Test {
 			return list.PrintList();
 		}, "2, 1");
 
-		GenerateTest("pop first recursive tail", () => {
+		GenerateTest("pop first recursive tail", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -210,7 +242,8 @@ static partial class Test {
 			return list.PrintList();
 		}, "3, 2");
 
-		GenerateTest("pop first recursive multiple", () => {
+		GenerateTest("pop first recursive multiple", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(2);
 			list.PushFront(1);
@@ -220,7 +253,8 @@ static partial class Test {
 			return list.PrintList();
 		}, "3, 1, 2");
 
-		GenerateTest("pop first recursive last", () => {
+		GenerateTest("pop first recursive last", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PopFirst(1);
@@ -228,14 +262,17 @@ static partial class Test {
 		}, "");
 	}
 
-	static void PopAllOf() {
-		GenerateTest("pop all of from empty", () => {
+	static void PopAllOf()
+	{
+		GenerateTest("pop all of from empty", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PopAllOf(1);
 			return list.PrintList();
 		}, "");
 
-		GenerateTest("pop all of none exist", () => {
+		GenerateTest("pop all of none exist", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushBack(1);
 			list.PushBack(2);
@@ -244,7 +281,8 @@ static partial class Test {
 			return list.PrintList();
 		}, "1, 2, 3");
 
-		GenerateTest("pop all of some exist", () => {
+		GenerateTest("pop all of some exist", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushBack(3);
 			list.PushBack(2);
@@ -254,7 +292,8 @@ static partial class Test {
 			return list.PrintList();
 		}, "3, 4");
 
-		GenerateTest("pop all of all exist", () => {
+		GenerateTest("pop all of all exist", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushBack(2);
 			list.PushBack(2);
@@ -264,19 +303,23 @@ static partial class Test {
 		}, "");
 	}
 
-	static void Count() {
-		GenerateTest("count 0", () => {
+	static void Count()
+	{
+		GenerateTest("count 0", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			return list.Count;
 		}, 0);
 
-		GenerateTest("count 1", () => {
+		GenerateTest("count 1", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			return list.Count;
 		}, 1);
 
-		GenerateTest("count 3", () => {
+		GenerateTest("count 3", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -285,13 +328,16 @@ static partial class Test {
 		}, 3);
 	}
 
-	static void Contains() {
-		GenerateTest("contains in empty", () => {
+	static void Contains()
+	{
+		GenerateTest("contains in empty", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			return list.Contains(1);
 		}, false);
 
-		GenerateTest("contains existing", () => {
+		GenerateTest("contains existing", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -299,7 +345,8 @@ static partial class Test {
 			return list.Contains(2);
 		}, true);
 
-		GenerateTest("contains non-existing", () => {
+		GenerateTest("contains non-existing", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.PushFront(2);
@@ -308,21 +355,25 @@ static partial class Test {
 		}, false);
 	}
 
-	static void Sort() {
-		GenerateTest("sort empty", () => {
+	static void Sort()
+	{
+		GenerateTest("sort empty", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.Sort();
 			return list.PrintList();
 		}, "");
 
-		GenerateTest("sort single element", () => {
+		GenerateTest("sort single element", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushFront(1);
 			list.Sort();
 			return list.PrintList();
 		}, "1");
 
-		GenerateTest("sort sorted", () => {
+		GenerateTest("sort sorted", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushBack(1);
 			list.PushBack(2);
@@ -331,7 +382,8 @@ static partial class Test {
 			return list.PrintList() == "1, 2, 3" && !hasChanged;
 		}, true);
 
-		GenerateTest("sort multiple elements", () => {
+		GenerateTest("sort multiple elements", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushBack(3);
 			list.PushBack(1);
@@ -340,7 +392,8 @@ static partial class Test {
 			return list.PrintList() == "1, 2, 3" && hasChanged;
 		}, true);
 
-		GenerateTest("sort strings", () => {
+		GenerateTest("sort strings", () =>
+		{
 			LinkedList<string> list = new LinkedList<string>();
 			list.PushBack("b");
 			list.PushBack("a");
@@ -351,7 +404,8 @@ static partial class Test {
 			return list.PrintList();
 		}, "C, a, a, b, d");
 
-		GenerateTest("sort reverse", () => {
+		GenerateTest("sort reverse", () =>
+		{
 			LinkedList<int> list = new LinkedList<int>();
 			list.PushBack(1);
 			list.PushBack(3);

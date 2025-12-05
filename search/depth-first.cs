@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-public class DepthFirst : Search, Search.IAlgorithm {
-	public LinkedList<Coordinate> Run(int[,] grid, Coordinate start, Coordinate end, ref byte[,] gridSearchState) {
+public class DepthFirst : Search, Search.IAlgorithm
+{
+	public LinkedList<Coordinate> Run(int[,] grid, Coordinate start, Coordinate end, ref byte[,] gridSearchState)
+	{
 		Debug.WriteLine($"[INFO] Starting Depth-First from ({start.row}, {start.col}) to ({end.row}, {end.col})");
 
 		LinkedList<Coordinate> openSet = new LinkedList<Coordinate>();
@@ -13,12 +15,14 @@ public class DepthFirst : Search, Search.IAlgorithm {
 		openSet.PushFront(start);
 		gridSearchState[start.row, start.col] ^= OPEN_FLAG;
 
-		while (openSet.Count > 0) {
+		while (openSet.Count > 0)
+		{
 			Coordinate current = openSet.PopFront();
 			gridSearchState[current.row, current.col] ^= (OPEN_FLAG | CHECKING_FLAG);
 
 			// reconstruct and exit if the end is found
-			if (current.Equals(end)) {
+			if (current.Equals(end))
+			{
 				Debug.WriteLine("[INFO] Depth-First found a path to the end");
 				LinkedList<Coordinate> path = ReconstructPath(cameFrom, current);
 				WalkPath(path, ref gridSearchState);
@@ -31,15 +35,18 @@ public class DepthFirst : Search, Search.IAlgorithm {
 			RunAnimationFrame(animationDelay);
 
 			// itterate over the neighbours
-			for (int i = neighbours.Length - 1; i >= 0; i--) {
+			for (int i = neighbours.Length - 1; i >= 0; i--)
+			{
 				Coordinate neighbour = neighbours[i];
-				Coordinate next = new Coordinate {
+				Coordinate next = new Coordinate
+				{
 					row = current.row + neighbour.row,
 					col = current.col + neighbour.col
 				};
 
 				// skip if target cell is a wall, in open set, or in closed set
-				if (!IsCellEmpty(grid, next) || openSet.Contains(next) || closedSet.Contains(next)) {
+				if (!IsCellEmpty(grid, next) || openSet.Contains(next) || closedSet.Contains(next))
+				{
 					continue;
 				}
 

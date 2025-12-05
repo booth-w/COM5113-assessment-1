@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-public class BreadthFirst : Search, Search.IAlgorithm {
-	public LinkedList<Coordinate> Run(int[,] grid, Coordinate start, Coordinate end, ref byte[,] gridSearchState) {
+public class BreadthFirst : Search, Search.IAlgorithm
+{
+	public LinkedList<Coordinate> Run(int[,] grid, Coordinate start, Coordinate end, ref byte[,] gridSearchState)
+	{
 		Debug.WriteLine($"[INFO] Starting Breadth-First from ({start.row}, {start.col}) to ({end.row}, {end.col})");
 
 		LinkedList<Coordinate> openSet = new LinkedList<Coordinate>();
@@ -13,12 +15,14 @@ public class BreadthFirst : Search, Search.IAlgorithm {
 		openSet.PushFront(start);
 		gridSearchState[start.row, start.col] ^= OPEN_FLAG;
 
-		while (openSet.Count > 0) {
+		while (openSet.Count > 0)
+		{
 			Coordinate current = openSet.PopFront();
 			gridSearchState[current.row, current.col] ^= (OPEN_FLAG | CHECKING_FLAG);
 
 			// reconstruct and exit if the end is found
-			if (current.Equals(end)) {
+			if (current.Equals(end))
+			{
 				Debug.WriteLine("[INFO] Breadth-First found a path to the end");
 				LinkedList<Coordinate> path = ReconstructPath(cameFrom, current);
 				WalkPath(path, ref gridSearchState);
@@ -31,14 +35,17 @@ public class BreadthFirst : Search, Search.IAlgorithm {
 			RunAnimationFrame(animationDelay);
 
 			// itterate over the neighbours
-			foreach (Coordinate neighbour in neighbours) {
-				Coordinate next = new Coordinate {
+			foreach (Coordinate neighbour in neighbours)
+			{
+				Coordinate next = new Coordinate
+				{
 					row = current.row + neighbour.row,
 					col = current.col + neighbour.col
 				};
 
 				// skip if target cell is a wall, in open set, or in closed set
-				if (!IsCellEmpty(grid, next) || openSet.Contains(next) || closedSet.Contains(next)) {
+				if (!IsCellEmpty(grid, next) || openSet.Contains(next) || closedSet.Contains(next))
+				{
 					continue;
 				}
 

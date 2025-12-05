@@ -4,13 +4,15 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Diagnostics;
 
-public partial class TerrainGridWindow : Form {
+public partial class TerrainGridWindow : Form
+{
 	public TerrainGridControl grid;
 
 	private bool ignoreDropdownOnChange = false;
 	public string? loadedFilePath = null;
 
-	public TerrainGridWindow() {
+	public TerrainGridWindow()
+	{
 		InitializeComponent();
 
 		grid = new TerrainGridControl();
@@ -42,16 +44,20 @@ public partial class TerrainGridWindow : Form {
 	/// <summary>
 	/// A button to open a file dialog for loading from a map file
 	/// </summary>
-	public class LoadMapButton : Button {
-		public LoadMapButton(TerrainGridControl grid) {
+	public class LoadMapButton : Button
+	{
+		public LoadMapButton(TerrainGridControl grid)
+		{
 			Text = "Load Map";
 
-			Click += (sender, e) => {
+			Click += (sender, e) =>
+			{
 				OpenFileDialog openFileDialog = new OpenFileDialog();
 				openFileDialog.Title = "Select Map File";
 				openFileDialog.Filter = "Map Files (*.txt)|*.txt|All Files (*.*)|*.*";
 
-				if (openFileDialog.ShowDialog() == DialogResult.OK) {
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
 					string filePath = openFileDialog.FileName;
 					string[] terrainData = System.IO.File.ReadAllLines(filePath);
 					TerrainGridWindow parentWindow = (TerrainGridWindow)this.FindForm();
@@ -66,8 +72,10 @@ public partial class TerrainGridWindow : Form {
 	/// <summary>
 	/// A dropdown menu to select the search algorithm
 	/// </summary>
-	public class SearchDropdown : ComboBox {
-		public SearchDropdown() {
+	public class SearchDropdown : ComboBox
+	{
+		public SearchDropdown()
+		{
 			DropDownStyle = ComboBoxStyle.DropDownList;
 
 			// populate the dropdown with the available search algorithms
@@ -77,9 +85,11 @@ public partial class TerrainGridWindow : Form {
 			SelectedIndexChanged += OnChange;
 		}
 
-		private void OnChange(object sender, EventArgs e) {
+		private void OnChange(object sender, EventArgs e)
+		{
 			TerrainGridWindow parentWindow = (TerrainGridWindow)this.FindForm();
-			if (parentWindow.ignoreDropdownOnChange) {
+			if (parentWindow.ignoreDropdownOnChange)
+			{
 				Debug.WriteLine($"[WARN] Ignoring dropdown onchange event");
 				return;
 			}
@@ -95,19 +105,24 @@ public partial class TerrainGridWindow : Form {
 	/// <summary>
 	/// A button that runs all search algorithms against all maps
 	/// </summary>
-	public class RunAllButton : Button {
-		public RunAllButton(TerrainGridControl grid) {
+	public class RunAllButton : Button
+	{
+		public RunAllButton(TerrainGridControl grid)
+		{
 			Text = "Run All";
 
-			Click += (sender, e) => {
+			Click += (sender, e) =>
+			{
 				TerrainGridWindow parentWindow = (TerrainGridWindow)this.FindForm();
-				foreach (var mapFile in System.IO.Directory.GetFiles("maps", "*.txt")) {
+				foreach (var mapFile in System.IO.Directory.GetFiles("maps", "*.txt"))
+				{
 					string[] terrainData = System.IO.File.ReadAllLines(mapFile);
 					string fileName = System.IO.Path.GetFileName(mapFile).Split('.')[0];
 					parentWindow.loadedFilePath = fileName;
 					grid.LoadTerrainData(terrainData);
 
-					foreach (var searchAlgorithm in Search.algorithms) {
+					foreach (var searchAlgorithm in Search.algorithms)
+					{
 						Debug.WriteLine($"[INFO] Running {searchAlgorithm.Key} on {mapFile}");
 
 						// change the selected item in the dropdown without triggering onchange event

@@ -2,13 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-public class AStar : Search, Search.IAlgorithm {
-	private struct AStarScore {
+public class AStar : Search, Search.IAlgorithm
+{
+	private struct AStarScore
+	{
 		public int cummulative;
 		public int heuristic;
 	}
 
-	public LinkedList<Coordinate> Run(int[,] grid, Coordinate start, Coordinate end, ref byte[,] gridSearchState) {
+	public LinkedList<Coordinate> Run(int[,] grid, Coordinate start, Coordinate end, ref byte[,] gridSearchState)
+	{
 		Debug.WriteLine($"[INFO] Starting A* from ({start.row}, {start.col}) to ({end.row}, {end.col})");
 
 		LinkedList<Coordinate> openSet = new LinkedList<Coordinate>();
@@ -19,17 +22,20 @@ public class AStar : Search, Search.IAlgorithm {
 		openSet.PushFront(start);
 		gridSearchState[start.row, start.col] ^= OPEN_FLAG;
 
-		coordScore[start] = new AStarScore {
+		coordScore[start] = new AStarScore
+		{
 			cummulative = 0,
 			heuristic = Heuristic(start, end)
 		};
 
-		while (openSet.Count > 0) {
+		while (openSet.Count > 0)
+		{
 			Coordinate current = openSet.PopFront();
 			gridSearchState[current.row, current.col] ^= (OPEN_FLAG | CHECKING_FLAG);
 
 			// reconstruct and exit if the end is found
-			if (current.Equals(end)) {
+			if (current.Equals(end))
+			{
 				Debug.WriteLine("[INFO] A* found a path to the end");
 				LinkedList<Coordinate> path = ReconstructPath(cameFrom, current);
 				WalkPath(path, ref gridSearchState);
@@ -42,14 +48,17 @@ public class AStar : Search, Search.IAlgorithm {
 			RunAnimationFrame(animationDelay);
 
 			// itterate over the neighbours
-			foreach (Coordinate neighbour in neighbours) {
-				Coordinate next = new Coordinate {
+			foreach (Coordinate neighbour in neighbours)
+			{
+				Coordinate next = new Coordinate
+				{
 					row = current.row + neighbour.row,
 					col = current.col + neighbour.col
 				};
 
 				// skip if target cell is a wall or in closed set
-				if (!IsCellEmpty(grid, next) || closedSet.Contains(next)) {
+				if (!IsCellEmpty(grid, next) || closedSet.Contains(next))
+				{
 					continue;
 				}
 
@@ -58,21 +67,25 @@ public class AStar : Search, Search.IAlgorithm {
 				// generate scores for neighbour and add to open set
 				int nextCummulative = coordScore[current].cummulative + grid[next.row, next.col];
 				int nextHeuristic = Heuristic(next, end);
-				if (!coordScore.ContainsKey(next) || nextCummulative < coordScore[next].cummulative) {
-					coordScore[next] = new AStarScore {
+				if (!coordScore.ContainsKey(next) || nextCummulative < coordScore[next].cummulative)
+				{
+					coordScore[next] = new AStarScore
+					{
 						cummulative = nextCummulative,
 						heuristic = nextHeuristic
 					};
 					cameFrom[next] = current;
 
-					if (!openSet.Contains(next)) {
+					if (!openSet.Contains(next))
+					{
 						openSet.PushFront(next);
 						gridSearchState[next.row, next.col] ^= OPEN_FLAG;
 					}
 				}
 
 				// sort open set by lowest score
-				openSet.Sort((Coordinate a, Coordinate b) => {
+				openSet.Sort((Coordinate a, Coordinate b) =>
+				{
 					AStarScore scoreA = coordScore[a];
 					AStarScore scoreB = coordScore[b];
 
@@ -82,7 +95,8 @@ public class AStar : Search, Search.IAlgorithm {
 					return totalA.CompareTo(totalB);
 				});
 
-				if (toDraw) {
+				if (toDraw)
+				{
 					RunAnimationFrame(animationDelay);
 				}
 			}
