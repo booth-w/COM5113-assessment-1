@@ -201,6 +201,9 @@ public class TerrainGridControl : Control {
 			return;
 		}
 
+		// reset search state
+		this.gridSearchState = new byte[this.rows, this.cols];
+
 		Search.Coordinate startCoord = new Search.Coordinate { row = this.start.row, col = this.start.col };
 		Search.Coordinate endCoord = new Search.Coordinate { row = this.end.row, col = this.end.col };
 		LinkedList<Search.Coordinate> path = searchAlgorithm.Run(this.terrainMap, startCoord, endCoord, ref this.gridSearchState);
