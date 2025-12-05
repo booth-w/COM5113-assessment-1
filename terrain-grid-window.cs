@@ -7,6 +7,8 @@ using System.Diagnostics;
 public partial class TerrainGridWindow : Form {
 	public TerrainGridControl grid;
 
+	private bool ignoreDropdownOnChange = false;
+
 	public TerrainGridWindow() {
 		InitializeComponent();
 
@@ -29,6 +31,11 @@ public partial class TerrainGridWindow : Form {
 		searchDropdown.Location = new Point(120, (topPanel.Height - searchDropdown.Height) / 2);
 		searchDropdown.Size = new Size(150, 30);
 		topPanel.Controls.Add(searchDropdown);
+
+		RunAllButton runAllButton = new RunAllButton(grid);
+		runAllButton.Location = new Point(280, 10);
+		runAllButton.Size = new Size(100, 30);
+		topPanel.Controls.Add(runAllButton);
 	}
 
 	/// <summary>
@@ -67,10 +74,51 @@ public partial class TerrainGridWindow : Form {
 		}
 
 		private void OnChange(object sender, EventArgs e) {
-			Debug.WriteLine($"[INFO] Triggered dropdown onchange event");
-			var searchAlgorithm = Search.algorithms[(string)SelectedItem];
 			TerrainGridWindow parentWindow = (TerrainGridWindow)this.FindForm();
+			if (parentWindow.ignoreDropdownOnChange) {
+				Debug.WriteLine($"[WARN] Ignoring dropdown onchange event");
+				return;
+			}
+
+			Debug.WriteLine($"[INFO] Triggered dropdown onchange event");
+
+			Search.animationDelay = 100;
+			var searchAlgorithm = Search.algorithms[(string)SelectedItem];
 			parentWindow.grid.StartSearch(searchAlgorithm);
+		}
+	}
+
+	/// <summary>
+	/// A button that runs all search algorithms against all maps
+	/// </summary>
+	public class RunAllButton : Button {
+		public RunAllButton(TerrainGridControl grid) {
+			Text = "Run All";
+
+			Click += (sender, e) => {
+				foreach (var mapFile in System.IO.Directory.GetFiles("maps", "*.txt")) {
+					string[] terrainData = System.IO.File.ReadAllLines(mapFile);
+					grid.LoadTerrainData(terrainData);
+
+					foreach (var searchAlgorithm in Search.algorithms) {
+						Debug.WriteLine($"[INFO] Running {searchAlgorithm.Key} on {mapFile}");
+
+						// change the selected item in the dropdown without triggering onchange event
+						TerrainGridWindow parentWindow = (TerrainGridWindow)this.FindForm();
+						parentWindow.ignoreDropdownOnChange = true;
+						var dropdown = parentWindow.Controls.OfType<Panel>().First().Controls.OfType<SearchDropdown>().First();
+						dropdown.SelectedItem = searchAlgorithm.Key;
+						parentWindow.ignoreDropdownOnChange = false;
+
+						Search.animationDelay = 20;
+						grid.StartSearch(searchAlgorithm.Value);
+					}
+				}
+
+				// alert done
+				MessageBox.Show("Completed running all search algorithms on all maps", "Run All Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+			};
 		}
 	}
 }
