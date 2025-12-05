@@ -53,7 +53,7 @@ public class DepthFirst : Search, Search.IAlgorithm {
 			gridSearchState[current.row, current.col] ^= CHECKING_FLAG;
 		}
 
-		Debug.WriteLine("[INFO] Depth-First did not find a path to the end");
+		Debug.WriteLine("[WARN] Depth-First did not find a path to the end");
 		return new LinkedList<Coordinate>();
 	}
 }

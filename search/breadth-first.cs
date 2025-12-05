@@ -52,7 +52,7 @@ public class BreadthFirst : Search, Search.IAlgorithm {
 			gridSearchState[current.row, current.col] ^= CHECKING_FLAG;
 		}
 
-		Debug.WriteLine("[INFO] Breadth-First did not find a path to the end");
+		Debug.WriteLine("[WARN] Breadth-First did not find a path to the end");
 		return new LinkedList<Coordinate>();
 	}
 }
