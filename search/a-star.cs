@@ -53,6 +53,8 @@ public class AStar : Search, Search.IAlgorithm {
 					continue;
 				}
 
+				bool toDraw = !openSet.Contains(next);
+
 				// generate scores for neighbour and add to open set
 				int nextCummulative = coordScore[current].cummulative + grid[next.row, next.col];
 				int nextHeuristic = Heuristic(next, end);
@@ -80,7 +82,9 @@ public class AStar : Search, Search.IAlgorithm {
 					return totalA.CompareTo(totalB);
 				});
 
-				RunAnimationFrame(100);
+				if (toDraw) {
+					RunAnimationFrame(100);
+				}
 			}
 			gridSearchState[current.row, current.col] ^= CHECKING_FLAG;
 		}
