@@ -210,9 +210,24 @@ public class TerrainGridControl : Control {
 
 		if (path.Count == 0) {
 			MessageBox.Show("No path to the end could be found", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		} else {
+			TerrainGridWindow parentWindow = this.FindForm() as TerrainGridWindow;
+			WritePathToFile($"output/{parentWindow.loadedFilePath}Path_{searchAlgorithm.GetType().Name}.txt", path);
 		}
 	}
 
+	private void WritePathToFile(string filePath, LinkedList<Search.Coordinate> path) {
+		try {
+			using (System.IO.StreamWriter writer = new System.IO.StreamWriter(filePath)) {
+				foreach (Search.Coordinate coord in path) {
+					writer.WriteLine($"{coord.row} {coord.col}");
+				}
+			}
+			Debug.WriteLine($"[INFO] Path written to file: {filePath}");
+		} catch (Exception ex) {
+			Debug.WriteLine($"[ERROR] Failed to write path to file: {ex.Message}");
+		}
+	}
 
 	/// <summary>
 	/// Display the terrain map

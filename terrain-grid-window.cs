@@ -8,6 +8,7 @@ public partial class TerrainGridWindow : Form {
 	public TerrainGridControl grid;
 
 	private bool ignoreDropdownOnChange = false;
+	public string? loadedFilePath = null;
 
 	public TerrainGridWindow() {
 		InitializeComponent();
@@ -53,6 +54,9 @@ public partial class TerrainGridWindow : Form {
 				if (openFileDialog.ShowDialog() == DialogResult.OK) {
 					string filePath = openFileDialog.FileName;
 					string[] terrainData = System.IO.File.ReadAllLines(filePath);
+					TerrainGridWindow parentWindow = (TerrainGridWindow)this.FindForm();
+					string fileName = System.IO.Path.GetFileName(filePath).Split('.')[0];
+					parentWindow.loadedFilePath = fileName;
 					grid.LoadTerrainData(terrainData);
 				}
 			};
@@ -96,15 +100,17 @@ public partial class TerrainGridWindow : Form {
 			Text = "Run All";
 
 			Click += (sender, e) => {
+				TerrainGridWindow parentWindow = (TerrainGridWindow)this.FindForm();
 				foreach (var mapFile in System.IO.Directory.GetFiles("maps", "*.txt")) {
 					string[] terrainData = System.IO.File.ReadAllLines(mapFile);
+					string fileName = System.IO.Path.GetFileName(mapFile).Split('.')[0];
+					parentWindow.loadedFilePath = fileName;
 					grid.LoadTerrainData(terrainData);
 
 					foreach (var searchAlgorithm in Search.algorithms) {
 						Debug.WriteLine($"[INFO] Running {searchAlgorithm.Key} on {mapFile}");
 
 						// change the selected item in the dropdown without triggering onchange event
-						TerrainGridWindow parentWindow = (TerrainGridWindow)this.FindForm();
 						parentWindow.ignoreDropdownOnChange = true;
 						var dropdown = parentWindow.Controls.OfType<Panel>().First().Controls.OfType<SearchDropdown>().First();
 						dropdown.SelectedItem = searchAlgorithm.Key;
