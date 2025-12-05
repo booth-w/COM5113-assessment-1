@@ -22,6 +22,8 @@ public abstract class Search {
 	protected const byte OPEN_FLAG = 0b0010;
 	protected const byte CLOSED_FLAG = 0b0001;
 
+	public static int animationDelay = 100;
+
 	/// <summary>
 	/// North, East, South, West
 	/// </summary>

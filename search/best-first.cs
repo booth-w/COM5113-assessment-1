@@ -29,7 +29,7 @@ public class BestFirst : Search, Search.IAlgorithm {
 
 			closedSet.PushFront(current);
 			gridSearchState[current.row, current.col] ^= CLOSED_FLAG;
-			RunAnimationFrame(100);
+			RunAnimationFrame(animationDelay);
 
 			// itterate over the neighbours
 			for (int i = neighbours.Length - 1; i >= 0; i--) {
@@ -62,7 +62,7 @@ public class BestFirst : Search, Search.IAlgorithm {
 				openSet.Sort((a, b) => coordScore[a].CompareTo(coordScore[b]));
 
 				if (toDraw) {
-					RunAnimationFrame(100);
+					RunAnimationFrame(animationDelay);
 				}
 			}
 

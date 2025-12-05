@@ -39,7 +39,7 @@ public class AStar : Search, Search.IAlgorithm {
 			closedSet.PushFront(current);
 			gridSearchState[current.row, current.col] ^= CLOSED_FLAG;
 
-			RunAnimationFrame(100);
+			RunAnimationFrame(animationDelay);
 
 			// itterate over the neighbours
 			foreach (Coordinate neighbour in neighbours) {
@@ -83,7 +83,7 @@ public class AStar : Search, Search.IAlgorithm {
 				});
 
 				if (toDraw) {
-					RunAnimationFrame(100);
+					RunAnimationFrame(animationDelay);
 				}
 			}
 			gridSearchState[current.row, current.col] ^= CHECKING_FLAG;
