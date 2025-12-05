@@ -45,7 +45,7 @@ public class DepthFirst : Search, Search.IAlgorithm
 				};
 
 				// skip if target cell is a wall, in open set, or in closed set
-				if (!IsCellEmpty(grid, next) || openSet.Contains(next) || closedSet.Contains(next))
+				if (!IsCellEmpty(grid, next) || closedSet.Contains(next))
 				{
 					continue;
 				}
